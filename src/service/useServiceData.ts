@@ -1,13 +1,9 @@
 import { http } from "./https";
 
 export class ProductsService {
-    async getProducts({ search = "", priceRange = "", page = 1 }) {
+    async getProducts(searchQuery = "", priceRange = "", page = 1) {
         const { data } = await http.get(`/products`, {
-            params: {
-                search,
-                priceRange,
-                page
-            }
+            params: { search: searchQuery, price: priceRange, page },
         });
         return data;
     }

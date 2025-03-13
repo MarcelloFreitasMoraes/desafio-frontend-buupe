@@ -1,27 +1,27 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "../pages/home/home";
+import Products from "../pages/products/products";
 import Header from "../components/header";
+import Register from "@/pages/register/register";
+import { useAuthStore } from "@/auth/useStore";
+import Login from "@/pages/login/login";
 
 export const AppRoutes = () => {
-    // const { isAuthenticated } = useAuthStore(); 
+    const { isAuthenticated } = useAuthStore(); 
     return (
         <BrowserRouter>
-        <Header/>
-            {/* {isAuthenticated ? (
-                <BaseLayout>
+            {isAuthenticated ? (
+                <>
+                    <Header />
                     <Routes>
-                        <Route path="/people" element={<People />} />
-                        {PATHS.map(({ element, path }) => (
-                            <Route key={path} element={element} path={path} />
-                        ))}
+                        <Route path="/products" element={<Products />} />                       
                     </Routes>
-                </BaseLayout>
-            ) : ( */}
+                </>
+            ) : (
                 <Routes>
-                    <Route path="/" element={<Home />} />
-                    {/* <Route path="/register" element={<Register />} /> */}
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
                 </Routes>
-            {/* )} */}
+            )} 
         </BrowserRouter>
     );
 };
