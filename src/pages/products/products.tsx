@@ -5,6 +5,8 @@ import { Product } from '../../@types/product';
 import ProductSkeleton from '../../components/product-skeleton';
 import { Input } from '../../components/ui/input';
 import { Checkbox } from '../../components/ui/checkbox';
+import { useSearchParams } from 'react-router-dom';
+import { Search } from 'lucide-react';
 
 const priceFilters = [
   { id: "preco-abaixo-50", label: "Abaixo de R$50", value: "below-50" },
@@ -13,20 +15,39 @@ const priceFilters = [
 ];
 
 const Products: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
   const [priceRange, setPriceRange] = useState("");
   const [page, setPage] = useState(1);
   const [products, setProducts] = useState<Product[]>([]);
 
-  const { query, loading } = useProductsData(searchQuery, priceRange, page);
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("productName") || "");
+  const productNameFromQuery = searchParams.get("productName") || "";
+  const { query, loading } = useProductsData(productNameFromQuery, "", page);
+
   const observerRef = useRef<HTMLDivElement | null>(null);
 
-  // Atualiza produtos conforme o scroll infinito
+  useEffect(() => {
+    if (productNameFromQuery) {
+      setProducts([]);
+      setPage(1);
+    }
+  }, [productNameFromQuery]);
+
   useEffect(() => {
     if (query && query.length > 0) {
       setProducts((prev) => [...prev, ...query]);
     }
   }, [query]);
+
+  useEffect(() => {
+    setProducts([]); // Sempre limpa os produtos ao mudar a busca
+    setPage(1); // Reinicia a paginação
+  }, [productNameFromQuery]);
+
+
+  const handleSearch = (value: string) => {
+    setSearchParams({ productName: value });
+  };
 
   // Detecta scroll infinito
   useEffect(() => {
@@ -42,13 +63,6 @@ const Products: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Atualiza os filtros de preço
-  const handlePriceFilterChange = (filterValue: string) => {
-    setPriceRange((prev) => (prev === filterValue ? "" : filterValue));
-    setPage(1); // Reseta a páginação
-    setProducts([]); // Reseta a lista de produtos
-  };
-
   return (
     <div className="container mx-auto p-4">
       <div className='py-4'>
@@ -56,11 +70,11 @@ const Products: React.FC = () => {
           className='border-t border-gray-300 bg-white'
           placeholder="Buscar produto..."
           value={searchQuery}
-          onChange={(e) => {
-            setSearchQuery(e.target.value);
-            setPage(1);
-            setProducts([]);
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearch(searchQuery); 
           }}
+          endIcon={<Search onClick={() => handleSearch(searchQuery)} />} 
         />
       </div>
 
@@ -72,7 +86,7 @@ const Products: React.FC = () => {
               id={filter.id}
               className='border-t border-gray-200 bg-white'
               checked={priceRange === filter.value}
-              onChange={() => handlePriceFilterChange(filter.value)}
+              onChange={() => { }}
             />
             <label htmlFor={filter.id} className="text-black cursor-pointer">
               {filter.label}
@@ -82,8 +96,8 @@ const Products: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {products.map((product) => (
-          <Card key={product.id} className="p-4 border-t border-gray-200 bg-white rounded-2xl shadow-md shadow-black/14 overflow-hidden">
+        {products.map((product, index) => (
+          <Card key={index} className="p-4 border-t border-gray-200 bg-white rounded-2xl shadow-md shadow-black/14 overflow-hidden">
             <div className='w-full h-40'>
               <img className="w-full h-full object-cover rounded-md" src={product.productImg} alt={product.productName} />
             </div>
