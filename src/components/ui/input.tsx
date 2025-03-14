@@ -4,14 +4,11 @@ import { cn } from "@/lib/utils";
 interface InputProps extends React.ComponentProps<"input"> {
   endIcon?: React.ReactNode;
   error?: string
-  label?: string
-  required?: boolean
 }
 
-function Input({ className, type, endIcon, error, label, required, ...props }: InputProps) {
+function Input({ className, type, endIcon, error, ...props }: InputProps) {
   return (
-    <div className="relative flex items-center">
-      <label className="pb-1 text-base text-black font-bold">{label} <span className="text-red-500">{required && '*'}</span></label>
+    <div className="relative flex  items-center">
       <input
         type={type}
         data-slot="input"

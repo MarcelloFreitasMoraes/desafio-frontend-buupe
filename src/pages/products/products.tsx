@@ -50,11 +50,11 @@ const Products: React.FC = () => {
   };
 
   const handleCheckboxChange = (range: string) => {
-    setSelectedRange((prev) => (prev === range ? "" : range)); // Deselecionar ao clicar novamente
+    setSelectedRange((prev) => (prev === range ? "" : range));
   };
 
   useEffect(() => {
-    if (query && query?.length > 0) {
+    if (Array.isArray(query) && query.length > 0) {
       setProducts((prev) => [...prev, ...(Array.isArray(query) ? query : [])]);
     }
   }, [query, selectedRange]);
@@ -77,7 +77,7 @@ const Products: React.FC = () => {
     if (observerRef.current) observer.observe(observerRef.current);
 
     return () => observer.disconnect();
-  }, [products, productNameFromQuery]);
+  }, [productNameFromQuery]);
 
   const displayedProducts = products.filter(filterByPrice).slice(0, page * 10);
 
@@ -112,7 +112,7 @@ const Products: React.FC = () => {
           </div>
         ))}
       </div>
-      {displayedProducts.length > 0 ? (
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {displayedProducts?.map((product, index) => (
           <Card key={index} className="p-4 border-t border-gray-200 bg-white rounded-2xl shadow-md shadow-black/14 overflow-hidden">
@@ -125,19 +125,17 @@ const Products: React.FC = () => {
           </Card>
         ))}
       </div>
-      ) : (
-        <div className="flex justify-center items-center h-96">
-          <p className="text-lg text-black">Nenhum produto encontrado</p>
-        </div>
-      )}
-
       <div ref={observerRef} className="h-10"></div>   
-
       {(loading || isFetching) && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {Array.from({ length: 10 }).map((_, index) => (
             <ProductSkeleton key={index} />
           ))}
+        </div>
+      )}
+      {displayedProducts.length === 0 && (
+        <div className="flex justify-center items-center h-96">
+          <p className="text-lg text-black">Nenhum produto encontrado</p>
         </div>
       )}
     </div>

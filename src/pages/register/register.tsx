@@ -18,10 +18,10 @@ const registerSchema = z
       .string()
       .min(12, "A senha deve ter pelo menos 12 caracteres")
       .max(40, "A senha deve ter no máximo 40 caracteres")
-      .regex(/[a-z]/, "Must contain at least one lowercase letter")
-      .regex(/[A-Z]/, "Must contain at least one capital letter")
-      .regex(/[0-9]/, "Must contain at least one digit (0-9)")
-      .regex(/[\W_]/, "Must contain at least one special character"),
+      .regex(/[a-z]/, "Deve conter pelo menos uma letra minúscula")
+      .regex(/[A-Z]/, "Deve conter pelo menos uma letra maiúscula")
+      .regex(/[0-9]/, "Deve conter pelo menos um dígito (0-9)")
+      .regex(/[\W_]/, "Deve conter pelo menos um caractere especial"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -60,59 +60,59 @@ const Register: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-[url(/bg-login.gif)] bg-no-repeat bg-cover p-8 gap-8">
-      <Card className="p-4 bg-white">
-          <CardTitle>Create new account</CardTitle>
-          <CardDescription>Fill in the information below!</CardDescription>
+      <Card className="p-8 bg-white">
+          <CardTitle>Criar nova conta</CardTitle>
+          <CardDescription>Preencha as informações abaixo!</CardDescription>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
-        <Label>Name</Label>
+        <Label>Nome</Label>
           <Input className='border-t border-gray-300 bg-white' {...register("name")} 
-          // error={errors.name?.message}
+          error={errors.name?.message}
            required/>
-          <Label>Email</Label>
+          <Label>E-mail</Label>
           <Input className='border-t border-gray-300 bg-white' {...register("email")} 
-          // error={errors.email?.message} 
+          error={errors.email?.message} 
           required />
-          <Label>Password</Label>
+          <Label>Senha</Label>
           <Input className='border-t border-gray-300 bg-white'
             type="password"
             {...register("password")}
-            // error={errors.password?.message}
+            error={errors.password?.message}
             required
           />
-           <Label>Confirm password</Label>
+           <Label>Confirmar senha</Label>
           <Input className='border-t border-gray-300 bg-white'  type="password" required {...register("confirmPassword")} 
-          // error={errors.confirmPassword?.message} 
+          error={errors.confirmPassword?.message} 
           />
 
           <Button type="submit" variant="outline" className="bg-black text-white cursor-pointer">
-            To create
+            Criar
           </Button>
 
           <div className="flex gap-2 items-center cursor-pointer" onClick={() => navigate("/login")}>
             <MoveLeft />
-            <p>Return to login screen</p>
+            <p>Retornar à tela de login!</p>
           </div>          
         </form>
         <div className="flex flex-col gap-4 mt-4">
             <div className="flex gap-1 items-center">
               {isPasswordValid ? (validateLowerCase ? <CircleCheckBig className="text-green-600" /> : <CircleX />) : <CircleSmall />}
-              <p className="text-black text-sm">Must contain at least one lowercase letter</p>
+              <p className="text-black text-sm">Deve conter pelo menos uma letra minúscula</p>
             </div>
             <div className="flex gap-1 items-center">
               {isPasswordValid ? (validateUpperCase ? <CircleCheckBig className="text-green-600" /> : <CircleX className="text-red-500" />) : <CircleSmall />}
-              <p className="text-black text-sm">Must contain at least one capital letter</p>
+              <p className="text-black text-sm">Deve conter pelo menos uma letra maiúscula</p>
             </div>
             <div className="flex gap-1 items-center">
               {isPasswordValid ? (validateNumber ? <CircleCheckBig className="text-green-600" /> : <CircleX className="text-red-500" />) : <CircleSmall />}
-              <p className="text-black text-sm">Must contain at least one digit (0-9)</p>
+              <p className="text-black text-sm">Deve conter pelo menos um dígito (0-9)</p>
             </div>
             <div className="flex gap-1 items-center">
               {isPasswordValid ? (validateSpecialChar ? <CircleCheckBig className="text-green-600" /> : <CircleX className="text-red-500" />) : <CircleSmall />}
-              <p className="text-black text-sm">Must contain at least one special character</p>
+              <p className="text-black text-sm">Deve conter pelo menos um caractere especial</p>
             </div>
             <div className="flex gap-1 items-center">
               {isPasswordValid ? (validateLength ? <CircleCheckBig className="text-green-600" /> : <CircleX className="text-red-500" />) : <CircleSmall />}
-              <p className="text-black text-sm">Must be between 12 and 40 characters long</p>
+              <p className="text-black text-sm">"A senha deve ter pelo menos 12 caracteres</p>
             </div>
           </div>
       </Card>
