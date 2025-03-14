@@ -37,6 +37,7 @@ Exemplo de estrutura do `db.json`:
         "productImg": "https://st2.depositphotos.com/1017228/9399/i/450/depositphotos_93990140-stock-photo-cheerful-woman-showing-blank-smartphone.jpg",
         "productPrice": "R$ 20,00"
     },
+]
 }
 ```
 
