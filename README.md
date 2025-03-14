@@ -22,14 +22,21 @@ Exemplo de estrutura do `db.json`:
 
 ```json
 {
-  "films": [
-    { "id": 1, "title": "A New Hope", "release_date": "1977-05-25" },
-    { "id": 2, "title": "The Empire Strikes Back", "release_date": "1980-05-21" }
-  ],
-  "characters": [
-    { "id": 1, "name": "Luke Skywalker" },
-    { "id": 2, "name": "Darth Vader" }
-  ]
+  "products": [
+    {
+        "id": 1,
+        "productName": "Produto 1",
+        "productDescription": "Descrição do Produto 1",
+        "productImg": "https://st2.depositphotos.com/1017228/9399/i/450/depositphotos_93990140-stock-photo-cheerful-woman-showing-blank-smartphone.jpg",
+        "productPrice": "R$ 10,00"
+    },
+    {
+        "id": 2,
+        "productName": "iPhone 12",
+        "productDescription": "Apple iPhone 12 com 64GB",
+        "productImg": "https://st2.depositphotos.com/1017228/9399/i/450/depositphotos_93990140-stock-photo-cheerful-woman-showing-blank-smartphone.jpg",
+        "productPrice": "R$ 20,00"
+    },
 }
 ```
 
@@ -44,8 +51,7 @@ Exemplo de estrutura do `db.json`:
    - Permite ao usuário realizar o cadastro utilizando um formulário de criação de conta.
    
 3. **Tela de Listagem**:
-   - Exibe os dados consumidos da API local (ex: filmes, personagens, etc.).
-   - Implementação de paginação para navegação através de grandes volumes de dados.
+   - Exibe os dados consumidos da API local (ex: produtos.).
 
 ### Funcionalidades Adicionais
 
