@@ -70,13 +70,13 @@ Exemplo de estrutura do `db.json`:
 1. Clone este repositório:
 
 ```bash
-git clone https://github.com/MarcelloFreitasMoraes/desafio-frontend-mcc.git
+https://github.com/MarcelloFreitasMoraes/desafio-frontend-buupe.git
 ```
 
 2. Acesse o diretório do projeto:
 
 ```bash
-cd desafio-frontend-mcc
+cd desafio-frontend-buupe
 ```
 
 3. Instale as dependências:
