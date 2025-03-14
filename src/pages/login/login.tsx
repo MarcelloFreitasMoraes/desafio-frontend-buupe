@@ -61,7 +61,7 @@ const Login: React.FC = () => {
           // // error={errors.password?.message}
           />
 
-          <Button type="submit" variant="outline" className="bg-black text-white">
+          <Button type="submit" variant="outline" className="bg-black text-white cursor-pointer">
             Sign in
           </Button>
 

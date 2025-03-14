@@ -3,11 +3,15 @@ import { cn } from "@/lib/utils";
 
 interface InputProps extends React.ComponentProps<"input"> {
   endIcon?: React.ReactNode;
+  error?: string
+  label?: string
+  required?: boolean
 }
 
-function Input({ className, type, endIcon, ...props }: InputProps) {
+function Input({ className, type, endIcon, error, label, required, ...props }: InputProps) {
   return (
     <div className="relative flex items-center">
+      <label className="pb-1 text-base text-black font-bold">{label} <span className="text-red-500">{required && '*'}</span></label>
       <input
         type={type}
         data-slot="input"
@@ -19,8 +23,10 @@ function Input({ className, type, endIcon, ...props }: InputProps) {
         )}
         {...props}
       />
-
-      {endIcon && <span className="absolute right-3 text-gray-400 cursor-pointer">{endIcon}</span>}
+      {endIcon && <span className="absolute right-2 text-gray-400 cursor-pointer">{endIcon}</span>}
+      <div className="h-4">
+        {error && <p className="text-sm text-red-400">{error}</p>}
+      </div>
     </div>
   );
 }

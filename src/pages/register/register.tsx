@@ -84,7 +84,7 @@ const Register: React.FC = () => {
           // error={errors.confirmPassword?.message} 
           />
 
-          <Button type="submit" variant="outline" className="bg-black text-white">
+          <Button type="submit" variant="outline" className="bg-black text-white cursor-pointer">
             To create
           </Button>
 

@@ -7,61 +7,79 @@ import { Input } from '../../components/ui/input';
 import { Checkbox } from '../../components/ui/checkbox';
 import { useSearchParams } from 'react-router-dom';
 import { Search } from 'lucide-react';
+import { Label } from '@/components/ui/label';
 
 const priceFilters = [
-  { id: "preco-abaixo-50", label: "Abaixo de R$50", value: "below-50" },
-  { id: "preco-50-100", label: "Entre R$50 e R$100", value: "50-100" },
-  { id: "preco-acima-100", label: "Acima de R$100", value: "above-100" },
+  { id: 1, label: "Abaixo de R$50", range: '0-50' },
+  { id: 2, label: "Entre R$50 e R$100", range: '51-100' },
+  { id: 3, label: "Acima de R$100", range: '101+' },
 ];
 
 const Products: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [priceRange, setPriceRange] = useState("");
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(1);
   const [products, setProducts] = useState<Product[]>([]);
-
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [selectedRange, setSelectedRange] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState(searchParams.get("productName") || "");
   const productNameFromQuery = searchParams.get("productName") || "";
-  const { query, loading } = useProductsData(productNameFromQuery, "", page);
-
   const observerRef = useRef<HTMLDivElement | null>(null);
+  const { query, loading } = useProductsData(productNameFromQuery, page);
 
   useEffect(() => {
-    if (productNameFromQuery) {
-      setProducts([]);
-      setPage(1);
-    }
-  }, [productNameFromQuery]);
-
-  useEffect(() => {
-    if (query && query.length > 0) {
-      setProducts((prev) => [...prev, ...query]);
-    }
-  }, [query]);
-
-  useEffect(() => {
-    setProducts([]); // Sempre limpa os produtos ao mudar a busca
-    setPage(1); // Reinicia a paginação
-  }, [productNameFromQuery]);
-
+    setProducts([]);
+  }, [productNameFromQuery, selectedRange]);
 
   const handleSearch = (value: string) => {
     setSearchParams({ productName: value });
   };
 
-  // Detecta scroll infinito
+  const filterByPrice = (product: Product) => {
+    const price = parseFloat(product.productPrice.replace('R$', '').replace(',', '.').trim());
+
+    switch (selectedRange) {
+      case '0-50':
+        return price <= 50;
+      case '51-100':
+        return price > 50 && price <= 100;
+      case '101+':
+        return price > 100;
+      default:
+        return true;
+    }
+  };
+
+  const handleCheckboxChange = (range: string) => {
+    setSelectedRange((prev) => (prev === range ? "" : range)); // Deselecionar ao clicar novamente
+  };
+
   useEffect(() => {
+    if (query && query?.length > 0) {
+      setProducts((prev) => [...prev, ...(Array.isArray(query) ? query : [])]);
+    }
+  }, [query, selectedRange]);
+
+  useEffect(() => {
+    if (productNameFromQuery) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
-          setPage((prev) => prev + 1);
+        if (entries[0].isIntersecting && !isFetching) {
+          setIsFetching(true);
+          setTimeout(() => {
+            setPage(prev => prev + 1);
+            setIsFetching(false);
+          }, 1000); 
         }
       },
       { threshold: 1.0 }
     );
+
     if (observerRef.current) observer.observe(observerRef.current);
+
     return () => observer.disconnect();
-  }, []);
+  }, [products, productNameFromQuery]);
+
+  const displayedProducts = products.filter(filterByPrice).slice(0, page * 10);
 
   return (
     <div className="container mx-auto p-4">
@@ -83,20 +101,20 @@ const Products: React.FC = () => {
         {priceFilters.map((filter) => (
           <div key={filter.id} className="flex items-center gap-2 mt-2">
             <Checkbox
-              id={filter.id}
-              className='border-t border-gray-200 bg-white'
-              checked={priceRange === filter.value}
-              onChange={() => { }}
+              id={filter.id.toString()}
+              className='border-t border-gray-200 bg-white cursor-pointer'
+              checked={selectedRange === filter.range}
+              onCheckedChange={() => handleCheckboxChange(filter.range)}
             />
-            <label htmlFor={filter.id} className="text-black cursor-pointer">
+            <Label className="text-black cursor-pointer">
               {filter.label}
-            </label>
+            </Label>
           </div>
         ))}
       </div>
-
+      {displayedProducts.length > 0 ? (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {products.map((product, index) => (
+          {displayedProducts?.map((product, index) => (
           <Card key={index} className="p-4 border-t border-gray-200 bg-white rounded-2xl shadow-md shadow-black/14 overflow-hidden">
             <div className='w-full h-40'>
               <img className="w-full h-full object-cover rounded-md" src={product.productImg} alt={product.productName} />
@@ -107,11 +125,15 @@ const Products: React.FC = () => {
           </Card>
         ))}
       </div>
+      ) : (
+        <div className="flex justify-center items-center h-96">
+          <p className="text-lg text-black">Nenhum produto encontrado</p>
+        </div>
+      )}
 
-      {/* Scroll infinito */}
-      <div ref={observerRef} className="h-10"></div>
+      <div ref={observerRef} className="h-10"></div>   
 
-      {loading && (
+      {(loading || isFetching) && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {Array.from({ length: 10 }).map((_, index) => (
             <ProductSkeleton key={index} />

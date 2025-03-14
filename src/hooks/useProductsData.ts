@@ -1,20 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { ProductsService } from '../service/useServiceData';
+import { ProductProps } from '@/@types/product';
 
 const dataService = new ProductsService();
 
-export default function useProductsData(searchQuery = "", priceRange = "", page = 1) {
-    const { data, isLoading } = useQuery({
-        queryKey: ['products', searchQuery, priceRange, page],
-        queryFn: () => dataService.getProducts(
-            searchQuery || undefined,
-            priceRange || undefined,
-            page
-        ),
+export default function useProductsData(searchQuery = "", page = 1) {
+    const { data, isLoading } = useQuery<ProductProps>({
+        queryKey: ['products', searchQuery, page],
+        queryFn: () => dataService.getProducts(searchQuery, page),
+        keepPreviousData: true, 
     });
 
     return {
-        query: data?.data ?? [], 
+        query: data ?? [],
         loading: isLoading,
     };
 }
