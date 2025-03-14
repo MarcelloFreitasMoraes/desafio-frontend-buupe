@@ -1,54 +1,107 @@
-# React + TypeScript + Vite
+# Front-End Challenge - Buupe 🚀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este repositório contém a solução para o desafio técnico da MCC. O objetivo deste desafio é demonstrar habilidades em desenvolvimento front-end utilizando as tecnologias mais recentes e melhores práticas. O projeto consome dados de uma API local utilizando o `json-server` e apresenta um layout funcional, sem o uso de bibliotecas de componentes prontos.
 
-Currently, two official plugins are available:
+## 📦 Tecnologias Utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React.js**: Biblioteca JavaScript para a construção da interface.
+- **Vite**: Ferramenta de build e desenvolvimento para projetos React, com suporte ao TypeScript.
+- **TypeScript**: Superconjunto de JavaScript com tipagem estática.
+- **React Router DOM**: Para navegação entre as páginas do aplicativo.
+- **TanStack Query**: Para gerenciamento de requisições HTTP de forma eficiente.
+- **Zustand**: Biblioteca para gerenciamento de estado global.
+- **Tailwind CSS**: Framework de estilização utilitária para um design flexível.
+- **Lucide Icons**: Conjunto de ícones customizáveis para o layout.
+- **JSON Server**: API REST fake para desenvolvimento local.
 
-## Expanding the ESLint configuration
+## 🌐 API Utilizada
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+A API agora é local, utilizando o `json-server` para simular uma API REST. Os dados estão armazenados em um arquivo `db.json`.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
+Exemplo de estrutura do `db.json`:
+
+```json
+{
+  "films": [
+    { "id": 1, "title": "A New Hope", "release_date": "1977-05-25" },
+    { "id": 2, "title": "The Empire Strikes Back", "release_date": "1980-05-21" }
   ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+  "characters": [
+    { "id": 1, "name": "Luke Skywalker" },
+    { "id": 2, "name": "Darth Vader" }
+  ]
+}
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠 Funcionalidades
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Telas Desenvolvidas
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+1. **Tela de Login**:
+   - Permite ao usuário realizar login utilizando um formulário simples.
+   
+2. **Tela de Cadastro**:
+   - Permite ao usuário realizar o cadastro utilizando um formulário de criação de conta.
+   
+3. **Tela de Listagem**:
+   - Exibe os dados consumidos da API local (ex: filmes, personagens, etc.).
+   - Implementação de paginação para navegação através de grandes volumes de dados.
+
+### Funcionalidades Adicionais
+
+- **Cache (Front-End)**:
+   - Utilização de **TanStack Query** para cache de dados e evitar requisições desnecessárias à API.
+   
+- **Gerenciamento de Estado**:
+   - Uso do **Zustand** para gerenciamento global de estado, facilitando a manutenção e comunicação entre componentes.
+
+- **Responsividade**:
+   - O layout é totalmente responsivo, adaptando-se a diferentes tamanhos de tela usando **Tailwind CSS**.
+
+## ⚙️ Como Rodar o Projeto
+
+1. Clone este repositório:
+
+```bash
+git clone https://github.com/MarcelloFreitasMoraes/desafio-frontend-mcc.git
 ```
+
+2. Acesse o diretório do projeto:
+
+```bash
+cd desafio-frontend-mcc
+```
+
+3. Instale as dependências:
+
+```bash
+npm install
+```
+
+4. Instale o `json-server` globalmente (caso não tenha instalado):
+
+```bash
+npm install -g json-server
+```
+
+5. Inicie o `json-server` para servir a API local:
+
+```bash
+json-server --watch db.json --port 3000
+```
+
+6. Rode o projeto localmente:
+
+```bash
+npm run dev
+```
+
+7. Abra o navegador e acesse:
+
+```bash
+http://localhost:5173/
+```
+
+# autor
+### Marcelo Moraes
+
