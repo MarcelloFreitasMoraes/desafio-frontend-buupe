@@ -1,6 +1,6 @@
 # Front-End Challenge - Buupe 🚀
 
-Este repositório contém a solução para o desafio técnico da MCC. O objetivo deste desafio é demonstrar habilidades em desenvolvimento front-end utilizando as tecnologias mais recentes e melhores práticas. O projeto consome dados de uma API local utilizando o `json-server` e apresenta um layout funcional, sem o uso de bibliotecas de componentes prontos.
+Este repositório contém a solução para o desafio técnico da Buupe. O objetivo deste desafio é demonstrar habilidades em desenvolvimento front-end utilizando as tecnologias mais recentes e melhores práticas. O projeto consome dados de uma API local utilizando o `json-server` e apresenta um layout funcional, sem o uso de bibliotecas de componentes prontos.
 
 ## 📦 Tecnologias Utilizadas
 
